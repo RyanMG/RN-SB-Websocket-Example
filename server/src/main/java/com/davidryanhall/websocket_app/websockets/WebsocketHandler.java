@@ -16,8 +16,8 @@ import java.util.Set;
 public class WebsocketHandler extends AbstractWebSocketHandler {
     Set<WebSocketSession> connections = new HashSet<WebSocketSession>();
 
-    private String USER_JOINED = "USER_JOINED";
-    private String USER_LEFT = "USER_LEFT";
+    private final String USER_JOINED = "USER_JOINED";
+    private final String USER_LEFT = "USER_LEFT";
 
     public WebsocketHandler() {}
 
