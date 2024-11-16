@@ -6,6 +6,6 @@ I am developing my first native application, and as I research the peices I need
 You wrote about how this all works, in the hope it will help others who are learning and using a similar stack. You can read that here: XXXXX
 
 ## Running the application
-This will require Java 21 and NodeJS ~20.
-In the `server` folder, ./gradlew bootRun to boot up the server.
-In the client folder, `npm run start` to boot up expo. To test it property, open the application in two instances - the web, iOS and/or android.
+* This will require Java 21 and NodeJS ~20.
+* In the `server` folder, `./gradlew bootRun` to boot up the server.
+* In the client folder, `npm run start` to boot up expo. To test it property, open the application in two instances - the web, iOS and/or android.
