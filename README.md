@@ -9,3 +9,5 @@ You wrote about how this all works, in the hope it will help others who are lear
 * This will require Java 21 and NodeJS ~20.
 * In the `server` folder, `./gradlew bootRun` to boot up the server.
 * In the client folder, `npm run start` to boot up expo. To test it property, open the application in two instances - the web, iOS and/or android.
+
+<img width="949" alt="Screenshot 2024-11-16 at 7 29 09 PM" src="https://github.com/user-attachments/assets/355cebaa-7627-408c-80d7-6fb804105930">
