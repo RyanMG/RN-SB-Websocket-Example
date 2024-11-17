@@ -10,26 +10,38 @@ import {
   USER_LEFT
 } from '../../constants/websocketConstants';
 
-type ChatMessageLine = {
+type ChatMessageLineType = {
   message: string;
   id: string;
+  userId: string;
 };
 
+const RANDOM_USER_NAMES:string[] = ['Mae', 'Gregg', 'Angus', 'Bea', 'Germ', 'Casey', 'Selmers', 'Lori'];
+
 const ChatMessageLine = ({
-  message
+  message,
+  userId
 }: {
   message: string
+  userId: string
 }): ReactNode => {
   return (
-    <Text style={{marginBottom: 5, color: '#777777'}}>{message}</Text>
+    <View
+      style={{marginBottom: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'}}
+    >
+      <Text style={{color: '#777777'}}>{`${userId} > `}</Text>
+      <Text style={{color: '#888888'}}>{message}</Text>
+    </View>
   );
 };
 
 export default function Home():ReactNode {
-  const USER_ID = useRef<string>(uuid.v4());
+  const randomUser = RANDOM_USER_NAMES[Math.floor(Math.random() * RANDOM_USER_NAMES.length - 1)];
+
+  const USER_ID = useRef<string>(randomUser);
   const [messageText, setMessageText] = useState<string>('');
   const [usersActive, setUsersActive] = useState<number>(0);
-  const [messageList, setMessageList] = useState<ChatMessageLine[]>([]);
+  const [messageList, setMessageList] = useState<ChatMessageLineType[]>([]);
   const {subscribe, unsubscribe, sendMessage} = useWebsocket();
 
   const sendWebsocketMessage = ():void => {
@@ -39,6 +51,14 @@ export default function Home():ReactNode {
 
     sendMessage(createWebsocketMessage(CHAT_MESSAGE, messageText, USER_ID.current) as MessageResponseType);
     setMessageText('');
+    setMessageList([
+      ...messageList,
+      {
+        id: uuid.v4(),
+        message: messageText,
+        userId: USER_ID.current
+      }
+    ]);
   }
 
   useEffect(() => {
@@ -55,14 +75,16 @@ export default function Home():ReactNode {
         ...messageList,
         {
           id: metaData.messageId,
-          message
+          message,
+          userId: metaData.userId
         }
-      ])
+      ]);
     });
 
     return () => {
       unsubscribe(USER_JOINED as keyof IChannels);
       unsubscribe(USER_LEFT as keyof IChannels);
+      unsubscribe(CHAT_MESSAGE as keyof IChannels);
     }
   }, [subscribe, unsubscribe, messageList, usersActive]);
 
@@ -98,7 +120,7 @@ export default function Home():ReactNode {
           <FlatList
             style={styles.messageListWrapper}
             data={messageList}
-            renderItem={({item}) => <ChatMessageLine message={item.message} />}
+            renderItem={({item}) => <ChatMessageLine userId={item.userId} message={item.message} />}
             keyExtractor={item => item.id}
            />
         </View>
